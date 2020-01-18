@@ -7,6 +7,9 @@ import os
 import requests
 from pprint import pprint
 import json
+from flask import Response
+from flask import Flask
+from flask import render_template
 from threading import Thread, Condition
 import random
 import queue
@@ -23,13 +26,27 @@ API_KEY='02f97a914ac21efe0f718cc3acbd0ebce3d1dc5e '
 SPEED_LIMIT=0
 MAX_NUM_THREADS=4
 
-
+lock=threading.Lock()
 vehicles=queue.Queue(maxsize=50)
+
+app = Flask(__name__)
+resultImage=[]
 
 
 def overspeeding():
 
+	
+
+		
+
 	while True:
+		
+		print("Started running overspeeding")
+		if(vehicles.empty()):
+			print("Running Thread Overspeeding")
+			time.sleep(5)
+			continue
+
 		car_id=vehicles.get()
 		print("popped car:"+str(car_id))
 		with open(PATH+'/'+str(car_id)+'car.jpg', 'rb') as fp:
@@ -53,9 +70,7 @@ def overspeeding():
 	# print(type( res['results'][0]['box'] ))
 		
 
-		if(vehicles.empty()):
-			break
-
+		
 	
 	
 	
@@ -72,6 +87,9 @@ def estimateSpeed(location1, location2):
 	
 
 def trackMultipleObjects():
+
+	global resultImage
+
 	rectangleColor = (0, 255, 0)
 	frameCounter = 0
 	currentCarID = 0
@@ -84,7 +102,7 @@ def trackMultipleObjects():
 	speed = [None] * 1000
 	
 	# Write output to video file
-	out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (WIDTH,HEIGHT))
+	# out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (WIDTH,HEIGHT))
 
 
 	while True:
@@ -200,7 +218,7 @@ def trackMultipleObjects():
 						if int(speed[i])>SPEED_LIMIT:
 							vehicles.put(i)
 							print("Pushed Overspeeding Vehicle"+str(i))
-							overspeeding()
+							# overspeeding()
 					#if y1 > 275 and y1 < 285:
 					if speed[i] != None and y1 >= 180:
 						cv2.putText(resultImage, str(int(speed[i])) + " km/hr", (int(x1 + w1/2), int(y1-5)),cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)
@@ -222,15 +240,61 @@ def trackMultipleObjects():
 	
 	cv2.destroyAllWindows()
 	
+def generate():
 
+	# grab global references to the output frame and lock variables
+	
+	# loop over frames from the output stream
+	global resultImage, lock
+
+	while True:
+
+		with lock:
+		# wait until the lock is acquired
+		
+			# check if the output frame is available, otherwise skip
+			# the iteration of the loop
+			
+			if resultImage is None:
+				continue
+
+			# encode the frame in JPEG format
+			(flag, encodedImage) = cv2.imencode(".jpg", resultImage)
+
+			# ensure the frame was successfully encoded
+			if not flag:
+				continue
+
+		# yield the output frame in the byte format
+		yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+			bytearray(encodedImage) + b'\r\n')
+
+@app.route("/overspeed")
+def video_feed():
+	# return the response generated along with the specific media
+	# type (mime type)
+	return Response(generate(),
+		mimetype = "multipart/x-mixed-replace; boundary=frame")
+
+    
 
 
 
 
 if __name__ == '__main__':
 
-	
-	trackMultipleObjects()
+	t = threading.Thread(target=trackMultipleObjects)
+	t.daemon = True
+	t.start()
+
+	t2=threading.Thread(target=overspeeding)
+	t2.daemon=True
+	t2.start()
+	# trackMultipleObjects()
+
+	app.run(host='127.0.0.1', port='3001', debug=True,threaded=True, use_reloader=False)
+
+	# trackMultipleObjects()
 	# p=ProducerThread(name='producer')
 	# c=ConsumerThread(name="consumer")
 
