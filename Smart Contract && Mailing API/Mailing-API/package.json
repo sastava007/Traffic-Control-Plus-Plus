@@ -1,0 +1,17 @@
+{
+  "name": "node_mail_technex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "shivam",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "nodemailer": "^6.4.2"
+  }
+}
