@@ -30,6 +30,7 @@ Detect the static standing vehicles on the traffic signal, calculate the density
 Please go through the below illustrations, to understand how exactly a sppeding car will be detected and how we'll be extracting it's number plate. Once the number plate is detected, we'll fetch the detail of it's owner and issue a ticket against him using our blockchain network.
 ![enter image description here](https://docs.openvinotoolkit.org/2019_R3.1/vehicle-license-plate-detection-barrier-0106.jpeg)
 ![enter image description here](https://www.pyimagesearch.com/wp-content/uploads/2019/12/neighborhood_speed_physics_not_cal-768x573.jpg)
+![enter image description here](https://i.ibb.co/yWXq0df/Whats-App-Image-2020-07-26-at-00-46-14.jpg)
 
 ## Note:
 This repository contains the code for number plate extraction, and speed detection. The other service to generate and issue ticket for over-speeding vehicles is developed as a seperate service. It was developed in 24hr at Technex Hackathon, under modern-mobility theme and we landed as 2nd runner up. 
