@@ -13,18 +13,28 @@ from flask import render_template
 from threading import Thread, Condition
 import random
 import queue
+import ConfigParser
+
+
+config=ConfigParser.ConfigParser()
+configFilePath=r'.\config.json'
+config.read(configFilePath)
 
 carCascade = cv2.CascadeClassifier('myhaar.xml')
 video = cv2.VideoCapture('../short-test.mp4')
 PATH="P:/hackthon/images"
 FILE_PATH="P:/hackthon/list.txt"
-WIDTH = 1920
-HEIGHT = 1080
-MIN_WIDTH=100
-MIN_HEIGHT=100
-API_KEY='02f97a914ac21efe0f718cc3acbd0ebce3d1dc5e '
+WIDTH = config['WIDTH']
+HEIGHT = config['HEIGHT']
+MIN_WIDTH=config['MIN_WIDTH']
+MIN_HEIGHT=config['MIN_HEIGHT']
+API_KEY=config['API_KEY']
 SPEED_LIMIT=0
 MAX_NUM_THREADS=4
+
+
+
+
 
 lock=threading.Lock()
 vehicles=queue.Queue(maxsize=50)
