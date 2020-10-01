@@ -39,8 +39,16 @@ Please go through the below illustrations, to understand how exactly a speeding 
 ![enter image description here](/content/output.gif)
 **Extract the Number Plate of Overspeeding Cars**
 ![enter image description here](https://docs.openvinotoolkit.org/2019_R3.1/vehicle-license-plate-detection-barrier-0106.jpeg)
+
 **Speed Detection Algorithm**
+
 ![enter image description here](https://www.pyimagesearch.com/wp-content/uploads/2019/12/neighborhood_speed_physics_not_cal-768x573.jpg)
+
+
+**Speed Detection Algorithm**
+
+![enter image description here](https://www.pyimagesearch.com/wp-content/uploads/2019/12/neighborhood_speed_physics_not_cal-768x573.jpg)
+
 
 ## Note:
 This repository contains the code for number plate extraction, and speed detection. The other service to generate and issue ticket for over-speeding vehicles is developed as a seperate service. It was developed in 24hr at Technex Hackathon, under modern-mobility theme and we landed as 2nd runner up. 
