@@ -34,7 +34,7 @@ MAX_NUM_THREADS=4
 
 
 
-
+#Now this is my project. I will do whatever I want
 
 lock=threading.Lock()
 vehicles=queue.Queue(maxsize=50)
